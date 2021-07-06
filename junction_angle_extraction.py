@@ -22,7 +22,7 @@ arcpy.CheckOutExtension  ("Spatial")
 work_place =  "D://junction_angle_comparsion//junction_angles_under_different_projections//workplace_GDB_sinu_simply_mercator_measure.gdb//"
 arcpy.env.workspace = work_place 
 
-#input_river_network_layers = "D://junction_angle_comparsion//junction_angles_under_different_projections//river_polylines.gdb//HydroRIVERS_v10_na_mercator"
+input_river_network_layers = "D://junction_angle_comparsion//junction_angles_under_different_projections//river_polylines.gdb//HydroRIVERS_v10_na_mercator"
 
 
 threshold_douglas = 150#2000 #meters the data is projectrf VN lines data
@@ -36,12 +36,11 @@ results_feature = "junction_angle_points_under_mercator_projection"
 
 #simplify the Vn line
 vn_line_douglas = "vn_line_simp"
-#arcpy.cartography.SimplifyLine(input_river_network_layers,work_place+vn_line_douglas,"POINT_REMOVE",threshold_douglas,"","NO_KEEP" )
+arcpy.cartography.SimplifyLine(input_river_network_layers,work_place+vn_line_douglas,"POINT_REMOVE",threshold_douglas,"","NO_KEEP" )
 
 
 
 #buffer two circles 
-
 intersec_pts = "inter_pts_ger"
 arcpy.Intersect_analysis(work_place+vn_line_douglas , work_place+intersec_pts ,"ALL", "", "POINT")
 arcpy.AddField_management(work_place+intersec_pts, "x_co", "TEXT")
@@ -98,7 +97,7 @@ count_starting_pts_ending_pts = "SP_startPts_endPts"
 arcpy.SpatialJoin_analysis(work_place + count_starting_pts, work_place+single_clip_cut_vn_end_pts_erased_centers, work_place + count_starting_pts_ending_pts)
 
 
-# select pts which inclusding 2 end pts and 1 start point
+# select pts which including 2 end pts and 1 start point
 print("select 2st 1end")
 arcpy.AddField_management(work_place+count_starting_pts_ending_pts, "BOOL_JA", "SHORT")
 arcpy.MakeFeatureLayer_management(work_place+count_starting_pts_ending_pts, "ana_cir_lyr")
